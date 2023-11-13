@@ -1,30 +1,21 @@
 import './App.css';
+import Header from './Header';
+import Layout from './Layout';
+import Post from './Post';
+import {Route, Routes} from "react-router-dom";
+import IndexPage from './pages/IndexPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
   return (
-    <main>
-      <header>
-        <a href="" className="logo">MyEsportsApp</a>
-        <nav>
-          <a href="">Login</a>
-          <a href="">Register</a>
-        </nav>
-      </header>
-      <div className="post">
-        <div className="image">
-          <img src="https://s3-eu-central-1.amazonaws.com/www-staging.esports.com/WP%20Media%20Folder%20-%20esports-com//var/app/current/web/app/uploads/2020/06/Dota-2-by-Valve-720x384.jpg"></img>
-        </div>
-        <div className="text">
-          <h2>Tournament Name</h2>
-          <p className="info">
-            <a className="author">Test Organizer</a>
-            <time>2023-11-13 11:53</time>
-            <a className="game">Dota2</a>
-          </p>
-          <p className="summary">Tournament description</p>
-        </div>
-      </div>
-    </main>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<IndexPage />} />
+        <Route path ="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Route>
+    </Routes>
   );
 }
 
