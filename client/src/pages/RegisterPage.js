@@ -1,13 +1,50 @@
+import { useState } from "react";
+
+
 export default function RegisterPage() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [usertype, setUsertype] = useState('');
+
+    async function register(ev){
+        ev.preventDefault();
+        const response = await fetch('http://localhost:4000/register',{
+            method: 'POST',
+            body: JSON.stringify({username,password,email,usertype}),
+            headers: {'Content-Type':'application/json'},
+        });
+        if(response.status === 200) {
+            alert('registration successful')
+        } else {
+            alert('registration failed');
+        }
+    }
+
+    const onOptionChange = e => {
+        setUsertype(e.target.value);
+    }
+
     return(
-        <form className="register">
+        <form className="register" onSubmit={register}>
             <h1>Register</h1>
-            <input type="text" placeholder="username"/>
-            <input type="password" placeholder="password"/>
-            <input type="email" placeholder="email"/>
-            <input type="radio" id="organizer" name="user_type" value="Organizer"/>
+            <input type="text" 
+                placeholder="username" 
+                value={username} 
+                onChange={ev => setUsername(ev.target.value)}/>
+            <input type="password" 
+                placeholder="password"
+                value={password}
+                onChange={ev => setPassword(ev.target.value)}/>
+            <input type="email" 
+                placeholder="email"
+                value={email}
+                onChange={ev => setEmail(ev.target.value)}/>
+            <input type="radio" id="organizer" name="user_type" value="Organizer"
+                onChange={onOptionChange}/>
             <label for="organizer">Organizer</label>
-            <input type="radio" id="player" name="user_type" value="Player"/>
+            <input type="radio" id="player" name="user_type" value="Player"
+                onChange={onOptionChange}/>
             <label for="player">Player</label>
             <button>Register</button>
         </form>
