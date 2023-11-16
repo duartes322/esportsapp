@@ -14,7 +14,7 @@ app.use(cors({credentials:true, origin:'http://localhost:3000'}));
 app.use(express.json());
 app.use(cookieParser());
 
-mongoose.connect('mongodb+srv://billy:2rGHt6meAs4eAtc1@cluster0.z3um9nq.mongodb.net/?retryWrites=true&w=majority');
+mongoose.connect('');
 
 app.post('/register', async (req,res) => {
     const {username,password,email,usertype} = req.body;
