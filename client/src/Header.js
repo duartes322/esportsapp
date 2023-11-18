@@ -31,12 +31,14 @@ export default function Header() {
             <nav>
                 {usertype==='Organizer' && (
                     <>
+                        <span>Hello, {username}</span>
                         <Link to="/create">Create new tournament</Link>
                         <a onClick={logout}>Logout</a>
                     </>
                 )}
                 {usertype==='Player' && (
                     <>
+                        <span>Hello, {username}</span>
                         <Link to="/newteam">Create new team</Link>
                         <a onClick={logout}>Logout</a>
                     </>

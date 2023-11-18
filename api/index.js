@@ -89,6 +89,37 @@ app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
     });
 });
 
+app.put('/post', uploadMiddleware.single('file'), async (req,res) => {
+    let newPath = null;
+    if (req.file) {
+        const {originalname, path} = req.file;
+        const parts = originalname.split('.');
+        const ext = parts[parts.length - 1];
+        const newPath = path+'.'+ext;
+        fs.renameSync(path, newPath);
+    }
+
+    const {token} = req.cookies;
+    jwt.verify(token, secret, {}, async (err,info) => {
+        if (err) throw err;
+        const {id, title,summary,game,content} = req.body;
+        const postDoc = await Post.findById(id);
+        const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+        if (!isAuthor){
+            return res.status(400).json('voce nao e o autor');
+        }
+        await postDoc.updateOne({
+            title, 
+            summary,
+            game, 
+            content,
+            cover: newPath ? newPath : postDoc.cover,
+        });
+        res.json(postDoc);
+    });
+
+});
+
 app.get('/post', async (req,res) => {
     res.json(
         await Post.find()
@@ -103,5 +134,7 @@ app.get('/post/:id', async (req, res) => {
     const postDoc = await Post.findById(id).populate('author', ['username']);
     res.json(postDoc);
 });
+
+
 
 app.listen(4000);
