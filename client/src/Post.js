@@ -1,17 +1,24 @@
-export default function Post(){
+import { Link } from "react-router-dom";
+import {formatISO9075} from "date-fns";
+
+export default function Post({_id,title, summary, game, content, cover, createdAt, author}){
     return (
         <div className="post">
             <div className="image">
-            <img src="https://s3-eu-central-1.amazonaws.com/www-staging.esports.com/WP%20Media%20Folder%20-%20esports-com//var/app/current/web/app/uploads/2020/06/Dota-2-by-Valve-720x384.jpg"></img>
+                <Link to={`/post/${_id}`}>
+                    <img src={'http://localhost:4000/'+cover} alt=""/>
+                </Link>
             </div>
             <div className="text">
-            <h2>Tournament Name</h2>
+                <Link to={`/post/${_id}`}>
+                    <h2>{title}</h2>
+                </Link>
             <p className="info">
-                <a className="author">Test Organizer</a>
-                <time>2023-11-13 11:53</time>
-                <a className="game">Dota2</a>
+                <a className="author">{author.username}</a>
+                <time>{formatISO9075(new Date(createdAt))}</time>
+                <a className="game">{game}</a>
             </p>
-            <p className="summary">Tournament description</p>
+            <p className="summary">{summary}</p>
             </div>
         </div>
     );
