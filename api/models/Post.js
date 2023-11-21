@@ -8,6 +8,8 @@ const PostSchema = new Schema({
     content: String,
     cover: String,
     game: String,
+    playerCount: String,
+    registeredPlayers: [{type:Schema.Types.ObjectId, ref:'User'}],
     author: {type:Schema.Types.ObjectId, ref:'User'},
 }, {
     timestamps: true,

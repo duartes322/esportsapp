@@ -149,3 +149,24 @@ div.post-page a.edit-btn{
 a svg{
   height: 20px;
 }
+div.registered-players {
+  text-align: center;
+  color:#333;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+div.register-row{
+  text-align: center;
+  margin-bottom: 20px;
+}
+div.register-row a.register-btn{
+  background-color: #333;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #fff;
+  padding: 15px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+}

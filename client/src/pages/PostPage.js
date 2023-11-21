@@ -16,6 +16,21 @@ export default function PostPage(){
             });
     }, []);
 
+    async function registerPlayer(ev){
+        ev.preventDefault();
+    
+        const response = await fetch(`http://localhost:4000/post/${id}`, {
+                method: 'PUT',
+                credentials: 'include',
+            })
+            if (response.ok){
+                alert('registration successful')
+                window.location.reload();
+            } else {
+                alert('registration failed');
+            }
+    }
+
     if (!postInfo) return '';
 
     return(
@@ -37,6 +52,17 @@ export default function PostPage(){
                 <img src={`http://localhost:4000/${postInfo.cover}`} alt=""/>
             </div>
             <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}}/>
+            <div className="registered-players">{postInfo.registeredPlayers.length}/{postInfo.playerCount} registered</div> 
+            {postInfo.registeredPlayers.length !== Number(postInfo.playerCount) && (
+                <div className="register-row">
+                    <a className="register-btn" onClick={registerPlayer}>Register</a>
+                </div>
+            )}
+            {postInfo.registeredPlayers.length === Number(postInfo.playerCount) && (
+                <div className="register-end">
+                    <p>Tournament full</p>
+                </div>
+            )}
         </div>
     );
 }

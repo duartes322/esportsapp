@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
-mongoose.connect('');
+mongoose.connect('mongodb+srv://billy:2rGHt6meAs4eAtc1@cluster0.z3um9nq.mongodb.net/?retryWrites=true&w=majority');
 
 app.post('/register', async (req,res) => {
     const {username,password,email,usertype} = req.body;
@@ -76,11 +76,14 @@ app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
     const {token} = req.cookies;
     jwt.verify(token, secret, {}, async (err, info) => {
         if (err) throw err;
-        const {title, summary, game, content} = req.body;
+        const {title, summary, game, playerCount, content} = req.body;
+        const registeredPlayers = [];
         const postDoc = await Post.create({
             title,
             summary,
             game,
+            playerCount,
+            registeredPlayers,
             content,
             cover: newPath,
             author:info.id,
@@ -133,6 +136,23 @@ app.get('/post/:id', async (req, res) => {
     const {id} = req.params;
     const postDoc = await Post.findById(id).populate('author', ['username']);
     res.json(postDoc);
+});
+
+app.put('/post/:id', (req,res) => {
+    const {token} = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) throw err;
+    const newUser = info.id;
+    const {id} = req.params;
+    const postDoc = await Post.findById(id);
+    const registeredPlayers = postDoc.registeredPlayers;
+    registeredPlayers.push(newUser);
+
+    await postDoc.updateOne({
+        registeredPlayers,
+    });
+    res.json(postDoc);
+    })
 });
 
 
