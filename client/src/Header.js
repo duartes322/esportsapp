@@ -19,6 +19,7 @@ export default function Header() {
             credentials: 'include',
             method: 'POST',
         });
+        window.location.reload();
         setUserInfo(null);
     }
 
@@ -39,7 +40,6 @@ export default function Header() {
                 {usertype==='Player' && (
                     <>
                         <span>Hello, {username}</span>
-                        <Link to="/newteam">Create new team</Link>
                         <a onClick={logout}>Logout</a>
                     </>
                 )}

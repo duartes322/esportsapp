@@ -1303,6 +1303,11 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.53.0.tgz#bea56f2ed2b5baea164348ff4d5a879f6f81f20d"
   integrity sha512-Kn7K8dx/5U6+cT1yEhpX1w4PCSg0M+XyRILPgvwcEBjerFWCwQj5sbr3/VmxqV0JGHCBCzyd6LxypEuehypY1w==
 
+"@g-loot/react-tournament-brackets@^1.0.30":
+  version "1.0.30"
+  resolved "https://registry.yarnpkg.com/@g-loot/react-tournament-brackets/-/react-tournament-brackets-1.0.30.tgz#04e933506724b75aad38ccec83a8dbfc4377c99b"
+  integrity sha512-vbLjBtoOaZzxGpGM7J/XVHV8XY+1oktxgVTDv1orL+GolfIH8nueuEBZ/bt/m5wSZSFCFypmzVpVDPhmJGjKgA==
+
 "@humanwhocodes/config-array@^0.11.13":
   version "0.11.13"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.13.tgz#075dc9684f40a531d9b26b0822153c1e832ee297"

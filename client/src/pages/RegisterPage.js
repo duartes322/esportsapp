@@ -5,7 +5,7 @@ export default function RegisterPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [usertype, setUsertype] = useState('');
+    const [usertype, setUsertype] = useState('Player');
 
     async function register(ev){
         ev.preventDefault();
@@ -40,12 +40,6 @@ export default function RegisterPage() {
                 placeholder="email"
                 value={email}
                 onChange={ev => setEmail(ev.target.value)}/>
-            <input type="radio" id="organizer" name="user_type" value="Organizer"
-                onChange={onOptionChange}/>
-            <label for="organizer">Organizer</label>
-            <input type="radio" id="player" name="user_type" value="Player"
-                onChange={onOptionChange}/>
-            <label for="player">Player</label>
             <button>Register</button>
         </form>
     );

@@ -170,3 +170,22 @@ div.register-row a.register-btn{
   border-radius: 5px;
   text-decoration: none;
 }
+div.set-matches{
+  text-align: center;
+  margin-bottom: 20px;
+}
+div.set-matches a.matches-btn{
+  background-color: #333;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #fff;
+  padding: 15px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+div.register-end{
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}

@@ -3,6 +3,9 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const Post = require('./models/Post');
+const Player = require('./models/Player');
+const Match = require('./models/Match');
+const Tournament = require('./models/Tournament');
 const bcrypt = require('bcryptjs');
 const app  = express();
 const jwt = require('jsonwebtoken');
@@ -10,6 +13,7 @@ const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const uploadMiddleware = multer({dest: 'uploads/'});
 const fs = require('fs');
+
 
 const salt = bcrypt.genSaltSync(10);
 const secret = 'asdfasd8798dsfadsfahsdgf786jasdf'
@@ -134,7 +138,9 @@ app.get('/post', async (req,res) => {
 
 app.get('/post/:id', async (req, res) => {
     const {id} = req.params;
-    const postDoc = await Post.findById(id).populate('author', ['username']);
+    const postDoc = await Post.findById(id)
+        .populate('author', ['username'])
+        .populate('registeredPlayers', ['username']);
     res.json(postDoc);
 });
 
@@ -155,6 +161,67 @@ app.put('/post/:id', (req,res) => {
     })
 });
 
+app.post('/player', async (req,res) => {
+	const {playerId, resultText, isWinner, playerStatus, playerName, tournamentId} = req.body;
+    try{
+        const playerDoc = await Player.create({
+			id: playerId,
+            tournamentId,
+			resultText,
+			isWinner,
+			status: playerStatus,
+			name: playerName});
+            res.json(playerDoc);
+        }catch(e){
+            res.status(400).json(e);
+        }
+});
+
+app.post('/match', async (req,res) => {
+	const {matchId, matchName, nextMatchId, tournamentRoundText, startTime, matchState, participants, tournamentId} = req.body;
+	try{
+        const matchDoc = await Match.create({
+			id: matchId,
+            tournamentId,
+			name: matchName,
+			nextMatchId,
+			tournamentRoundText,
+			startTime,
+			state: matchState,
+			participants});
+            console.log(participants);
+            res.json(matchDoc);
+    }catch(e){
+        console.error(e);
+        res.status(400).json(e);
+    }
+
+});
+
+app.get('/match', async (req, res) => {
+    const {tournamentId} = req.query;
+    const matchDoc = await Match.find({tournamentId: tournamentId})
+        .select('_id') // Select only the _id field
+        .exec();
+    res.json(matchDoc);
+    /* console.log(matchDoc); */
+});
+
+app.post('/tournament', async (req,res) => {
+    const {tournamentLog} = req.body;
+    const tournamentArray = tournamentLog.map(item => item._id);
+    console.log(tournamentLog);
+    console.log(tournamentArray);
+    console.log('teste');
+    try{
+        const tournamentDoc = await Tournament.create({
+            matches: tournamentArray});
+        res.json(tournamentDoc);
+        console.log(tournamentDoc);
+    } catch(e) {
+        res.status(400).json(e);
+    }  
+});
 
 
 app.listen(4000);
