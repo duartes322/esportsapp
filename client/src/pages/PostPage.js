@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { formatISO9075 } from "date-fns";
 import { UserContext } from "../UserContext";
 
@@ -12,19 +12,24 @@ export default function PostPage(){
     const {userInfo} = useContext(UserContext);
     const [tournamentId, setTournamentId] = useState('');
     const {id} = useParams();
+    const navigate = useNavigate();
     
     
     async function createNewTournament(tournamentLog) { 
+        
+        
         const response = await fetch('http://localhost:4000/tournament', {
             method: 'POST',
-            body: JSON.stringify({ tournamentLog }),
+            body: JSON.stringify({ tournamentLog, tournamentId }),
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
         });
         if (response.ok){
+            /* const tournamentId = await response.json(); */
             console.log('TOURNAMENT CREATED');
+             navigate(`/tournament/${tournamentId}`);
         } else {
             console.error('Error creating tournament', response);
             const errorBody = await response.json();
@@ -184,7 +189,6 @@ export default function PostPage(){
             }
             alert('Matches set successfully');
             setMatchesSet(true);
-            /* return <Navigate to={'/matchlist'} /> */
     }
     
     useEffect(() => {
@@ -241,7 +245,7 @@ export default function PostPage(){
             {postInfo.registeredPlayers.length === Number(postInfo.playerCount) && (
                 <div className="register-end">
                     <p>Tournament full</p>
-                    <Link to={`/matchlist/${id}`}>Match list</Link>
+                    <Link to={`/tournament/${tournamentId}`}>Match list</Link>
                 </div>
             )}
             {userInfo.id === postInfo.author._id && (

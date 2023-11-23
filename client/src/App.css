@@ -189,3 +189,42 @@ div.register-end{
   margin-bottom: 20px;
   font-weight: bold;
 }
+.tourney-page {
+  display: flex;
+  flex-direction: column; /* Change the flex direction to column */
+  padding: 20px;
+}
+
+.single-elim {
+  flex: 1;
+  margin-bottom: 20px; /* Add margin-bottom to separate it from the next section */
+}
+
+.single-elim h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.single-elim h4 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.edit-tourney {
+  flex: 1;
+}
