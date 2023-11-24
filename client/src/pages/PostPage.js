@@ -9,6 +9,9 @@ export default function PostPage(){
     const [postInfo,setPostInfo] = useState(null);
     const [tournamentInfo, setTournamentInfo] = useState(null);
     const [matchesSet, setMatchesSet] = useState(false);
+    const [tournamentSet, setTournamentSet] = useState(
+        localStorage.getItem("tournamentSet") === "true"
+    )
     const {userInfo} = useContext(UserContext);
     const [tournamentId, setTournamentId] = useState('');
     const {id} = useParams();
@@ -27,7 +30,6 @@ export default function PostPage(){
             },
         });
         if (response.ok){
-            /* const tournamentId = await response.json(); */
             console.log('TOURNAMENT CREATED');
              navigate(`/tournament/${tournamentId}`);
         } else {
@@ -99,6 +101,10 @@ export default function PostPage(){
         var roundsLoop = postInfo.registeredPlayers.length;
         var roundsCounter = 1;
         var playerAssist = 0;
+
+        if (matchesSet) {
+            return;
+          }
         
         
         for (let i = 0; roundsLoop > 1; i++) {
@@ -124,7 +130,7 @@ export default function PostPage(){
                         }else{                   
                             playerName = 'TBD'
                             playerNameArray.push(playerName);
-                            playerId = '';
+                            playerId = Date.now().toString(36) + Math.random().toString(36).substring(2, 12).padStart(12, 0);
                             playerIdArray.push(playerId);
                         }
                         
@@ -189,6 +195,8 @@ export default function PostPage(){
             }
             alert('Matches set successfully');
             setMatchesSet(true);
+            setTournamentSet(true);
+            localStorage.setItem("tournamentSet", "true");
     }
     
     useEffect(() => {
@@ -197,8 +205,6 @@ export default function PostPage(){
             .then(response => {
               response.json().then(tournamentInfo => {
                 setTournamentInfo(tournamentInfo);
-                
-                // Assuming tournamentInfo is an array or an object with data
                 if (tournamentInfo && tournamentInfo.length > 0) {
                   console.log(tournamentInfo);
                   createNewTournament(tournamentInfo);
@@ -245,10 +251,10 @@ export default function PostPage(){
             {postInfo.registeredPlayers.length === Number(postInfo.playerCount) && (
                 <div className="register-end">
                     <p>Tournament full</p>
-                    <Link to={`/tournament/${tournamentId}`}>Match list</Link>
+                    <Link className="match-list" to={`/tournament/${tournamentId}`}>Match list</Link>
                 </div>
             )}
-            {userInfo.id === postInfo.author._id && (
+            {userInfo.id === postInfo.author._id && !tournamentSet &&(
                 <div className="set-matches">
                     {<a className="matches-btn" onClick={setMatches}>Set matches</a>}
                 </div>

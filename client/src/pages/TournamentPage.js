@@ -1,56 +1,3 @@
-/* import { SingleEliminationBracket, DoubleEliminationBracket, Match, SVGViewer } from '@g-loot/react-tournament-brackets';
-import { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { UserContext } from '../UserContext';
-
-export default function TournamentPage() {
-    const [matches,setMatches] = useState(null);
-    const {id} = useParams();
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(`http://localhost:4000/tournament/${id}`);
-          const data = await response.json();
-          console.log(data);
-          console.log(data.matches);
-          
-          
-          setMatches(data.matches);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-      
-      fetchData();
-      console.log(matches);
-    }, [id]); 
-
-    const SingleElimination = () => (
-        <SingleEliminationBracket
-          matches={matches}
-          matchComponent={Match}
-          svgWrapper={({ children, ...props }) => (
-            <SVGViewer width={2000} height={2000} {...props}>
-              {children}
-            </SVGViewer>
-          )}
-        />
-      );
-    
-
-    return(
-      <div className='tourney-page'>
-        <div className="single-elim">
-          {matches != null && <SingleElimination />}
-        </div>
-
-        <div className="edit-tourney">
-        
-        </div>
-      </div>
-    )
-} */
-
 import React, { useState, useEffect, useContext } from 'react';
 import { SingleEliminationBracket, Match, SVGViewer } from '@g-loot/react-tournament-brackets';
 import { useParams } from 'react-router-dom';
@@ -173,6 +120,7 @@ const TournamentPage = () => {
       <div>
         {tournament.map((match) => (
           <div key={match.id}>
+            
             <h3
               style={{ cursor: 'pointer', color: selectedMatch === match.id ? 'blue' : 'black' }}
               onClick={() => setSelectedMatch(selectedMatch === match.id ? null : match.id)}
@@ -181,8 +129,11 @@ const TournamentPage = () => {
             </h3>
             {selectedMatch === match.id && (
               <div>
-                {match.participants.map((participant) => (
+                {match.participants.map((participant, index) => (
+                  
                   <div key={participant.id}>
+                    {console.log(participant)}
+                    {console.log(participant.id)}
                     <h4>{participant.name}</h4>
                     <label>
                       Is Winner:

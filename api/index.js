@@ -201,7 +201,7 @@ app.post('/match', async (req,res) => {
 app.get('/match', async (req, res) => {
     const {tournamentId} = req.query;
     const matchDoc = await Match.find({tournamentId: tournamentId})
-        .select('_id') // Select only the _id field
+        .select('_id') 
         .exec();
     res.json(matchDoc);
     /* console.log(matchDoc); */
@@ -225,26 +225,7 @@ app.post('/tournament', async (req,res) => {
     }  
 });
 
-/* app.get('/tournament/:id', async (req, res) => {
-    const { id } = req.params;
-  
-    try {
-        const tourneyDoc = await Tournament.findById(id)
-            .populate({
-                path: 'matches',
-                populate: {
-                path: 'participants',
-            },
-        });
-        console.log(id);
-        res.json(tourneyDoc);
-        console.log(tourneyDoc);
-    } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  }); */
-  app.get('/tournament/:id', async (req, res) => {
+app.get('/tournament/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -283,21 +264,7 @@ app.post('/tournament', async (req,res) => {
             ...tourneyDoc.toObject(),
             matches: transformedMatches,
         };
-
-        console.log(id);
         res.json(transformedTournament);
-        console.log(transformedTournament);
-        /* transformedTournament.matches.forEach(match => {
-            console.log(`Participants for Match ${match.name}:`);
-            match.participants.forEach(participant => {
-                console.log(`  Participant ID: ${participant.id}`);
-                console.log(`  Participant Name: ${participant.name}`);
-                console.log(`  Participant isWinner: ${participant.isWinner}`);
-                console.log(`  Participant Status: ${participant.status}`);
-                // Add more participant details as needed
-            });
-            console.log(); // Add a blank line for better readability
-        }); */
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -310,17 +277,15 @@ app.put('/tournament/:id', async (req, res) => {
     console.log(updates);
   
     try {
-      // Loop through the updates and apply them to the corresponding matches and players
       for (const update of updates) {
-        console.log(update.fieldsToUpdate);
+        /* console.log(update.fieldsToUpdate);
         console.log(update.fieldsToUpdate.participantId);
         console.log(update.fieldsToUpdate.isWinner);
         console.log(update.fieldsToUpdate.resultText);
-        console.log(update.fieldsToUpdate.name);
+        console.log(update.fieldsToUpdate.name); */
   
         const participant = await Player.findOne({ id: update.participantId });
         
-        // Apply the updates to the participant
         if (update.fieldsToUpdate.isWinner !== undefined) {
           participant.isWinner = update.fieldsToUpdate.isWinner;
         }
@@ -331,7 +296,6 @@ app.put('/tournament/:id', async (req, res) => {
           participant.name = update.fieldsToUpdate.name;
         }
         
-        // ... other participant properties
         await participant.save();
       }
   
